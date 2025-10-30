@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testFile name="Template_TestFile" version="1.0">
+  <!-- Optional top-level description -->
+  <description>Example test file for import into MATLAB R2021b</description>
+
+  <testSuite name="MainSuite">
+    <description>Top-level suite grouping related test cases</description>
+
+    <testCase name="ExampleCase" testType="simulation">
+      <description>Basic simulation test case</description>
+      <modelPath>myModel.slx</modelPath>
+      <simulationMode>Normal</simulationMode>
+
+      <!-- Optional input parameters -->
+      <inputs>
+        <parameter name="gain" value="2.5"/>
+        <parameter name="offset" value="0.1"/>
+      </inputs>
+
+      <!-- Logical / Temporal Assessments -->
+      <assessments>
+
+        <assessment type="Logical" name="LT: RampWithinLimits">
+          <description>Checks that signal ramp_out stays within limits</description>
+          <expression>max(ramp_out) &lt; 5.0</expression>
+          <passCondition>True</passCondition>
+        </assessment>
+
+        <assessment type="Temporal" name="LT: SettlesWithinTime">
+          <description>Signal settles below threshold within 1 s</description>
+          <expression>eventually(time&lt;1 &amp;&amp; abs(error)&lt;0.05)</expression>
+          <passCondition>True</passCondition>
+        </assessment>
+
+      </assessments>
+
+      <!-- Optional iteration block -->
+      <iterations>
+        <iteration name="Nominal">
+          <parameter name="gain" value="1.0"/>
+        </iteration>
+        <iteration name="HighGain">
+          <parameter name="gain" value="3.0"/>
+        </iteration>
+      </iterations>
+
+    </testCase>
+  </testSuite>
+</testFile>
